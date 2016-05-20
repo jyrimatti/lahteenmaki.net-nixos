@@ -1,0 +1,6 @@
+
+/backup-configuration.nix
+/backup-hardware-configuration.nix
+/hardware-configuration.nix
+/nixos-in-place.nix
+/result
