@@ -8,6 +8,11 @@
     ./users.nix
   ];
 
+  environment.systemPackages = [
+    pkgs.nox
+    pkgs.nix-repl
+  ];
+
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
 
@@ -34,6 +39,9 @@
 
   users.mutableUsers = false;
   users.extraUsers.root.passwordFile = "/root/pwd";
+
+  users.defaultUserShell = "/run/current-system/sw/bin/zsh";
+  programs.zsh.enable = true;
 
   system.stateVersion = "16.03";
 
