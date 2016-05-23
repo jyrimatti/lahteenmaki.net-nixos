@@ -32,7 +32,7 @@
   virtualisation.docker.enable = true;
 
   security.acme.certs."lahteenmaki.net" = {
-    webroot = "/var/www/challenges/";
+    webroot = "/var/www/";
     email = "jyri-matti@lahteenmaki.net";
     postRun = "systemctl reload nginx.service";
   };
