@@ -31,17 +31,35 @@
         server_name lahteenmaki.net;
         listen *:80;
 
-        location ~ "^(.*[^?])?/index\.sh([?;].*)?$" {
-          root /var/www/;
+        location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
+          root /var/www;
           if (-f $request_filename) {
             fastcgi_pass unix:/run/fcgiwrap.sock;
           }
+        }
+
+        location ~ "^[^?]+\.sh([?#].*)?" {
+          root /var/www;
+          fastcgi_pass unix:/run/fcgiwrap.sock;
         }
 
         location / {
           root /var/www;
 
           #return 301 https://$host$request_uri;
+        }
+
+        location /bus-tre {
+          proxy_pass http://api.publictransport.tampere.fi/1_0_2/;
+        }
+        location /bus-hsl {
+          proxy_pass http://api.reittiopas.fi/hsl/prod/;
+        }
+        location /bus-siri {
+          proxy_pass https://siri.ij2010.tampere.fi/ws;
+        }
+        location /bus-json {
+          proxy_pass http://data.itsfactory.fi/siriaccess/vm/json;
         }
       }
 
