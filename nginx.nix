@@ -5,6 +5,8 @@
     http {
       charset utf-8;
       index index.html index.txt index.json index.geojson index.xml index.gml index.sh;
+      include ${pkgs.nginx}/conf/mime.types;
+
       fastcgi_index index.sh;
       fastcgi_param QUERY_STRING            $query_string;
       fastcgi_param REQUEST_METHOD          $request_method;
