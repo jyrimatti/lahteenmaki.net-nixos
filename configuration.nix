@@ -19,7 +19,7 @@
   swapDevices = [ { device = "/swap"; } ];
 
   networking.hostName = "lahteenmaki.net";
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 6667 ];
   networking.extraHosts = "37.136.84.32 aurinkofarmi";
 
   i18n = {
