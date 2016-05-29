@@ -3,7 +3,7 @@
 {
   services.znc.confOptions = {
     modules = [ "adminlog" "log" ];
-    userModules = [ "buffextras" ];
+    userModules = [];
     userName = "jyri-matti";
     nick = "Jyppe";
     passBlock = ''
