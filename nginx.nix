@@ -54,6 +54,11 @@
           root /var/www;
         }
 
+        location /24-days-2012/ {
+          root /var/www;
+          autoindex on;
+        }
+
         location /bus-tre {
           proxy_pass http://api.publictransport.tampere.fi/1_0_2/;
         }
