@@ -31,7 +31,12 @@
 
       server {
         server_name lahteenmaki.net;
-        listen *:80;
+
+        listen 443 ssl spdy;
+        listen [::]:443 ssl spdy;
+
+        ssl_certificate /var/lib/acme/lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/lahteenmaki.net/key.pem;
 
         location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
           root /var/www;
@@ -47,8 +52,6 @@
 
         location / {
           root /var/www;
-
-          #return 301 https://$host$request_uri;
         }
 
         location /bus-tre {
@@ -67,15 +70,18 @@
 
       server {
         server_name lahteenmaki.net;
-        listen 443 ssl spdy;
-        listen [::]:443 ssl spdy;
 
-        #ssl_certificate /var/lib/acme/lahteenmaki.net/fullchain.pem;
-        #ssl_certificate_key /var/lib/acme/lahteenmaki.net/key.pem;
+        listen *:80;
+
+        location /.well-known/acme-challenge {
+          root /var/www/.well-known/acme-challenge;
+        }
 
         location / {
           root /var/www;
+          return 301 https://$host$request_uri;
         }
+
       }
     }
     events {
