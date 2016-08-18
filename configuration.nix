@@ -18,9 +18,14 @@
 
   swapDevices = [ { device = "/swap"; } ];
 
+  networking.enableIPv6 = false;
+  networking.interfaces.enp0s3.ip4 = [ { address = "146.185.139.29"; prefixLength = 24; } ];
+  networking.defaultGateway = "146.185.139.1";
+  networking.nameservers = [ "8.8.8.8" "8.8.4.4" ];
+
   networking.hostName = "lahteenmaki.net";
   networking.firewall.allowedTCPPorts = [ 80 443 6667 ];
-  networking.extraHosts = "37.136.84.32 aurinkofarmi";
+  networking.extraHosts = "176.93.190.173 aurinkofarmi";
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
