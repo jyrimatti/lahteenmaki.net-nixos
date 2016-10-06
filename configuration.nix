@@ -25,7 +25,7 @@
 
   networking.hostName = "lahteenmaki.net";
   networking.firewall.allowedTCPPorts = [ 80 443 6667 ];
-  networking.extraHosts = "176.93.190.173 aurinkofarmi";
+  networking.extraHosts = "37.33.11.35 aurinkofarmi";
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
