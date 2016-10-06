@@ -17,6 +17,7 @@
     systemCronJobs = [
       "0 * * * *    jyri-matti source /etc/profile && /var/www/stiebel/simplify.sh /var/www/stiebel/data"
       "1-59 * * * * jyri-matti source /etc/profile && /var/www/stiebel/collect.sh $(cat /home/jyri-matti/stiebel-user) $(cat /home/jyri-matti/stiebel-pass) /var/www/stiebel/data"
+      "0 0 * * *    jyri-matti nix-store --gc"
     ];
   };
 
