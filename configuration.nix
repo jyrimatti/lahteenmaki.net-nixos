@@ -25,7 +25,7 @@
 
   networking.hostName = "lahteenmaki.net";
   networking.firewall.allowedTCPPorts = [ 80 443 6667 ];
-  networking.extraHosts = "37.33.11.35 aurinkofarmi";
+  networking.extraHosts = "37.136.189.96 aurinkofarmi";
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -38,9 +38,11 @@
   virtualisation.docker.enable = true;
 
   security.acme.certs."lahteenmaki.net" = {
-    webroot = "/var/www/";
+    webroot = config.security.acme.directory + "/acme-challenge";
     email = "jyri-matti@lahteenmaki.net";
-    postRun = "systemctl reload nginx.service";
+    user = "nginx";
+    group = "nginx";
+    postRun = "systemctl restart nginx.service";
   };
 
   users.mutableUsers = false;
