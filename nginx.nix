@@ -30,13 +30,47 @@
       fastcgi_param HTTPS                   $https;
 
       server {
-        server_name lahteenmaki.net;
+        server_name blog.lahteenmaki.net;
+        
+        listen 443 ssl;
+        listen [::]:443 ssl;
 
-        listen 443 ssl spdy;
-        listen [::]:443 ssl spdy;
+        ssl_certificate ${config.security.acme.directory}/blog.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key ${config.security.acme.directory}/blog.lahteenmaki.net/key.pem;
 
-        ssl_certificate /var/lib/acme/lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key /var/lib/acme/lahteenmaki.net/key.pem;
+        location / {
+          root /var/blog;
+        }
+
+        location ~ "^/([0-9]*)/([0-9]*)/" {
+          rewrite ^/$ https://blog.lahteenmaki.net/ permanent;
+        }
+      }
+
+      server {
+        server_name blog.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+        location / {
+          root /var/blog;
+          return 301 https://$host$request_uri;
+        }
+
+      }
+
+      server {
+        server_name lahteenmaki.net www.lahteenmaki.net;
+
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate ${config.security.acme.directory}/lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key ${config.security.acme.directory}/lahteenmaki.net/key.pem;
 
         location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
           root /var/www;
@@ -52,6 +86,10 @@
 
         location / {
           root /var/www;
+        }
+
+        location /blog {
+          rewrite ^/$ https://blog.lahteenmaki.net redirect;
         }
 
         location /24-days-2012/ {
@@ -74,12 +112,12 @@
       }
 
       server {
-        server_name lahteenmaki.net;
+        server_name lahteenmaki.net www.lahteenmaki.net;
 
         listen *:80;
 
-        location /.well-known/acme-challenge {
-          root /var/www/.well-known/acme-challenge;
+        location /.well-known/acme-challenge/ {
+          root /var/www;
         }
 
         location / {

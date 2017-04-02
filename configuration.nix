@@ -38,7 +38,15 @@
   virtualisation.docker.enable = true;
 
   security.acme.certs."lahteenmaki.net" = {
-    webroot = config.security.acme.directory + "/acme-challenge";
+    webroot = "/var/www";
+    email = "jyri-matti@lahteenmaki.net";
+    user = "nginx";
+    group = "nginx";
+    postRun = "systemctl restart nginx.service";
+  };
+
+  security.acme.certs."blog.lahteenmaki.net" = {
+    webroot = "/var/www";
     email = "jyri-matti@lahteenmaki.net";
     user = "nginx";
     group = "nginx";
