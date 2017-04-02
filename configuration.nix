@@ -53,4 +53,12 @@
 
   system.stateVersion = "16.03";
 
+  nix.gc = {
+    automatic = true;
+    dates = "0 03 * * *";
+  };
+
+  nix.extraOptions = ''
+    auto-optimise-store = true
+  '';
 }
