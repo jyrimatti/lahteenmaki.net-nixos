@@ -62,6 +62,35 @@
         }
 
       }
+      server {
+        server_name hs.lahteenmaki.net;
+        
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate ${config.security.acme.directory}/hs.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key ${config.security.acme.directory}/hs.lahteenmaki.net/key.pem;
+
+        location / {
+          root /var/hs;
+        }
+      }
+
+      server {
+        server_name hs.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+        location / {
+          root /var/hs;
+          return 301 https://$host$request_uri;
+        }
+
+      }
 
       server {
         server_name lahteenmaki.net www.lahteenmaki.net;
