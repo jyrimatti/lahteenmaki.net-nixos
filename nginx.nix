@@ -121,6 +121,38 @@
           rewrite ^/$ https://blog.lahteenmaki.net redirect;
         }
 
+        location /uitesteri/ {
+          root /var/www/;
+          add_header Access-Control-Allow-Origin *;
+        }
+
+        location ~ "^/http(s?)/([^/]*)(/)(.*)" {
+          resolver 8.8.8.8;
+          proxy_pass http$1://$2$3$4$is_args$args;
+          proxy_set_header Accept-Encoding "";
+          proxy_hide_header X-Frame-Options;
+          proxy_redirect '/' '/http$1/$2$3';
+          proxy_redirect 'http://$2' '/http/$2';
+          proxy_redirect 'https://$2' '/https/$2';
+          sub_filter 'href="/' 'href="/http$1/$2/';
+          sub_filter 'href=\'/' 'href=\'/http$1/$2/';
+          sub_filter 'src="/' 'src="/http$1/$2/';
+          sub_filter 'src=\'/' 'src=\'/http$1/$2/';
+          sub_filter 'action="/' 'action="/http$1/$2/';
+          sub_filter 'action=\'/' 'action=\'/http$1/$2/';
+          sub_filter '"http://$2/' '"/http/$2/';
+          sub_filter '"http://$2' '"/http/$2/';
+          sub_filter '"https://$2/' '"/https/$2/';
+          sub_filter '"https://$2' '"/https/$2/';
+          sub_filter '\'http://$2/' '\'/http/$2/';
+          sub_filter '\'http://$2' '\'/http/$2/';
+          sub_filter '\'https://$2/' '\'/https/$2/';
+          sub_filter '\'https://$2' '\'/https/$2/';
+          sub_filter '</body>' '<script type="text/javascript" src="/uitesteri/uitesteri.js"></script></body>';
+          sub_filter_once off;
+          sub_filter_types text/html;
+        }
+
         location /24-days-2012/ {
           root /var/www;
           autoindex on;
