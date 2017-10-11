@@ -93,6 +93,37 @@
       }
 
       server {
+        server_name alava.lahteenmaki.net;
+        
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate ${config.security.acme.directory}/alava.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key ${config.security.acme.directory}/alava.lahteenmaki.net/key.pem;
+
+        location / {
+          root /var/alava;
+        }
+      }
+
+      server {
+        server_name alava.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+        location / {
+          root /var/alava;
+          return 301 https://$host$request_uri;
+        }
+
+      }
+
+
+      server {
         server_name lahteenmaki.net www.lahteenmaki.net;
 
         listen 443 ssl;
@@ -119,6 +150,14 @@
 
         location /blog {
           rewrite ^/$ https://blog.lahteenmaki.net redirect;
+        }
+
+        location /hs {
+          rewrite ^/$ https://hs.lahteenmaki.net redirect;
+        }
+
+        location /alava {
+          rewrite ^/$ https://alava.lahteenmaki.net redirect;
         }
 
         location /uitesteri/ {

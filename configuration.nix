@@ -25,7 +25,7 @@
 
   networking.hostName = "lahteenmaki.net";
   networking.firewall.allowedTCPPorts = [ 80 443 6667 ];
-  networking.extraHosts = "37.136.189.96 aurinkofarmi";
+  networking.extraHosts = "37.136.254.85 aurinkofarmi";
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -54,6 +54,14 @@
   };
 
   security.acme.certs."hs.lahteenmaki.net" = {
+    webroot = "/var/www";
+    email = "jyri-matti@lahteenmaki.net";
+    user = "nginx";
+    group = "nginx";
+    postRun = "systemctl restart nginx.service";
+  };
+
+  security.acme.certs."alava.lahteenmaki.net" = {
     webroot = "/var/www";
     email = "jyri-matti@lahteenmaki.net";
     user = "nginx";
