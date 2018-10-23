@@ -93,6 +93,21 @@
       }
 
       server {
+        server_name tkd.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+        location / {
+          root /var/tkd;
+        }
+
+      }
+
+      server {
         server_name alava.lahteenmaki.net;
         
         listen 443 ssl;
@@ -154,6 +169,10 @@
 
         location /hs {
           rewrite ^/$ https://hs.lahteenmaki.net redirect;
+        }
+
+        location /tkd {
+          rewrite ^/$ http://tkd.lahteenmaki.net redirect;
         }
 
         location /alava {
