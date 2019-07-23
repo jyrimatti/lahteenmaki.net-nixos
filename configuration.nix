@@ -19,7 +19,7 @@
   swapDevices = [ { device = "/swap"; } ];
 
   networking.enableIPv6 = false;
-  networking.interfaces.enp0s3.ipv4.addresses = [ { address = "146.185.139.29"; prefixLength = 24; } ];
+  networking.interfaces.ens3.ipv4.addresses = [ { address = "146.185.139.29"; prefixLength = 24; } ];
   networking.defaultGateway = "146.185.139.1";
 
   networking.hostName = "lahteenmaki.net";
@@ -69,6 +69,14 @@
   };
 
   security.acme.certs."alava.lahteenmaki.net" = {
+    webroot = "/var/www";
+    email = "jyri-matti@lahteenmaki.net";
+    user = "nginx";
+    group = "nginx";
+    postRun = "systemctl restart nginx.service";
+  };
+
+  security.acme.certs."binarycache.lahteenmaki.net" = {
     webroot = "/var/www";
     email = "jyri-matti@lahteenmaki.net";
     user = "nginx";

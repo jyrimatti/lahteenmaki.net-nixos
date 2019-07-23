@@ -134,7 +134,37 @@
           root /var/alava;
           return 301 https://$host$request_uri;
         }
+      }
 
+      server {
+        server_name binarycache.lahteenmaki.net;
+        
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate ${config.security.acme.directory}/binarycache.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key ${config.security.acme.directory}/binarycache.lahteenmaki.net/key.pem;
+
+        location / {
+          proxy_pass http://localhost:${toString config.services.nix-serve.port};
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+        }
+      }
+
+      server {
+        server_name binarycache.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+	location / {
+          return 301 https://$host$request_uri;
+        }
       }
 
 
