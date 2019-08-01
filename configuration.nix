@@ -101,4 +101,6 @@
   nix.extraOptions = ''
     auto-optimise-store = true
   '';
+
+  nix.trustedUsers = ["jyri-matti"];
 }
