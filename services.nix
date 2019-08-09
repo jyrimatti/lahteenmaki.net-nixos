@@ -4,6 +4,7 @@
   imports = [
     ./nginx.nix
     ./znc.nix
+    ./minecraft.nix
   ];
 
   services.postfix = {

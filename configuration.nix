@@ -10,7 +10,6 @@
 
   environment.systemPackages = [
     pkgs.nox
-    pkgs.nix-repl
   ];
 
   boot.loader.grub.enable = true;
@@ -103,4 +102,6 @@
   '';
 
   nix.trustedUsers = ["jyri-matti"];
+
+  nixpkgs.config.allowUnfree = true;
 }
