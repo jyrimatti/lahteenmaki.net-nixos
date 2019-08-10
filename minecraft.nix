@@ -6,7 +6,7 @@
     eula = true;
     declarative = true;
     openFirewall = true;
-    jvmOpts = "-Xmx512M -Xms128M";
+    jvmOpts = "-Xmx1G -Xms256M";
     package = let 
       version = "1.14.4";
       url = "https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar";
