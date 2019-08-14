@@ -94,6 +94,20 @@
 
       server {
         server_name tkd.lahteenmaki.net;
+         
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate ${config.security.acme.directory}/tkd.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key ${config.security.acme.directory}/tkd.lahteenmaki.net/key.pem;
+
+        location / {
+          root /var/tkd;
+        }
+      }
+
+      server {
+        server_name tkd.lahteenmaki.net;
 
         listen *:80;
 
@@ -103,6 +117,7 @@
 
         location / {
           root /var/tkd;
+          return 301 https://$host$request_uri;
         }
 
       }
