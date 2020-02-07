@@ -10,6 +10,7 @@
 
   environment.systemPackages = [
     pkgs.nox
+    pkgs.ncdu
   ];
 
   boot.loader.grub.enable = true;

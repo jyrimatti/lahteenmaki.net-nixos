@@ -35,8 +35,8 @@
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        ssl_certificate ${config.security.acme.directory}/blog.lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key ${config.security.acme.directory}/blog.lahteenmaki.net/key.pem;
+        ssl_certificate /var/lib/acme/blog.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/blog.lahteenmaki.net/key.pem;
 
         location / {
           root /var/blog;
@@ -68,8 +68,8 @@
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        ssl_certificate ${config.security.acme.directory}/hs.lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key ${config.security.acme.directory}/hs.lahteenmaki.net/key.pem;
+        ssl_certificate /var/lib/acme/hs.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/hs.lahteenmaki.net/key.pem;
 
         location / {
           root /var/hs;
@@ -98,8 +98,8 @@
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        ssl_certificate ${config.security.acme.directory}/tkd.lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key ${config.security.acme.directory}/tkd.lahteenmaki.net/key.pem;
+        ssl_certificate /var/lib/acme/tkd.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/tkd.lahteenmaki.net/key.pem;
 
         location / {
           root /var/tkd;
@@ -128,8 +128,8 @@
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        ssl_certificate ${config.security.acme.directory}/alava.lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key ${config.security.acme.directory}/alava.lahteenmaki.net/key.pem;
+        ssl_certificate /var/lib/acme/alava.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/alava.lahteenmaki.net/key.pem;
 
         location / {
           root /var/alava;
@@ -157,8 +157,8 @@
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        ssl_certificate ${config.security.acme.directory}/binarycache.lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key ${config.security.acme.directory}/binarycache.lahteenmaki.net/key.pem;
+        ssl_certificate /var/lib/acme/binarycache.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/binarycache.lahteenmaki.net/key.pem;
 
         location / {
           proxy_pass http://localhost:${toString config.services.nix-serve.port};
@@ -189,8 +189,8 @@
         listen 443 ssl;
         listen [::]:443 ssl;
 
-        ssl_certificate ${config.security.acme.directory}/lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key ${config.security.acme.directory}/lahteenmaki.net/key.pem;
+        ssl_certificate /var/lib/acme/lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/lahteenmaki.net/key.pem;
 
         location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
           root /var/www;
@@ -229,32 +229,32 @@
           add_header Access-Control-Allow-Origin *;
         }
 
-        location ~ "^/http(s?)/([^/]*)(/)(.*)" {
-          resolver 8.8.8.8;
-          proxy_pass http$1://$2$3$4$is_args$args;
-          proxy_set_header Accept-Encoding "";
-          proxy_hide_header X-Frame-Options;
-          proxy_redirect '/' '/http$1/$2$3';
-          proxy_redirect 'http://$2' '/http/$2';
-          proxy_redirect 'https://$2' '/https/$2';
-          sub_filter 'href="/' 'href="/http$1/$2/';
-          sub_filter 'href=\'/' 'href=\'/http$1/$2/';
-          sub_filter 'src="/' 'src="/http$1/$2/';
-          sub_filter 'src=\'/' 'src=\'/http$1/$2/';
-          sub_filter 'action="/' 'action="/http$1/$2/';
-          sub_filter 'action=\'/' 'action=\'/http$1/$2/';
-          sub_filter '"http://$2/' '"/http/$2/';
-          sub_filter '"http://$2' '"/http/$2/';
-          sub_filter '"https://$2/' '"/https/$2/';
-          sub_filter '"https://$2' '"/https/$2/';
-          sub_filter '\'http://$2/' '\'/http/$2/';
-          sub_filter '\'http://$2' '\'/http/$2/';
-          sub_filter '\'https://$2/' '\'/https/$2/';
-          sub_filter '\'https://$2' '\'/https/$2/';
-          sub_filter '</body>' '<script type="text/javascript" src="/uitesteri/uitesteri.js"></script></body>';
-          sub_filter_once off;
-          sub_filter_types text/html;
-        }
+#        location ~ "^/http(s?)/(rata\.digitraffic\.fi|www\.lupapiste\.fi)(/)(.*)" {
+#          resolver 8.8.8.8;
+#          proxy_pass http$1://$2$3$4$is_args$args;
+#          proxy_set_header Accept-Encoding "";
+#          proxy_hide_header X-Frame-Options;
+#          proxy_redirect '/' '/http$1/$2$3';
+#          proxy_redirect 'http://$2' '/http/$2';
+#          proxy_redirect 'https://$2' '/https/$2';
+#          sub_filter 'href="/' 'href="/http$1/$2/';
+#          sub_filter 'href=\'/' 'href=\'/http$1/$2/';
+#          sub_filter 'src="/' 'src="/http$1/$2/';
+#          sub_filter 'src=\'/' 'src=\'/http$1/$2/';
+#          sub_filter 'action="/' 'action="/http$1/$2/';
+#          sub_filter 'action=\'/' 'action=\'/http$1/$2/';
+#          sub_filter '"http://$2/' '"/http/$2/';
+#          sub_filter '"http://$2' '"/http/$2/';
+#          sub_filter '"https://$2/' '"/https/$2/';
+#          sub_filter '"https://$2' '"/https/$2/';
+#          sub_filter '\'http://$2/' '\'/http/$2/';
+#          sub_filter '\'http://$2' '\'/http/$2/';
+#          sub_filter '\'https://$2/' '\'/https/$2/';
+#          sub_filter '\'https://$2' '\'/https/$2/';
+#          sub_filter '</body>' '<script type="text/javascript" src="/uitesteri/uitesteri.js"></script></body>';
+#          sub_filter_once off;
+#          sub_filter_types text/html;
+#        }
 
         location /24-days-2012/ {
           root /var/www;
