@@ -62,9 +62,10 @@
         }
 
       }
+
       server {
         server_name hs.lahteenmaki.net;
-        
+
         listen 443 ssl;
         listen [::]:443 ssl;
 
@@ -91,6 +92,69 @@
         }
 
       }
+
+      server {
+        server_name joona.lahteenmaki.net;
+
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate /var/lib/acme/joona.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/joona.lahteenmaki.net/key.pem;
+
+        location / {
+          root /var/joona;
+        }
+      }
+
+      server {
+        server_name joona.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+        location / {
+          root /var/joona;
+          return 301 https://$host$request_uri;
+        }
+
+      }
+
+
+      server {
+        server_name juuso.lahteenmaki.net;
+
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate /var/lib/acme/juuso.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/juuso.lahteenmaki.net/key.pem;
+
+        location / {
+          root /var/juuso;
+
+        }
+      }
+
+      server {
+        server_name juuso.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+        location / {
+          root /var/juuso;
+          return 301 https://$host$request_uri;
+        }
+
+      }
+
 
       server {
         server_name tkd.lahteenmaki.net;

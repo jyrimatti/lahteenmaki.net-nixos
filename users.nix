@@ -12,4 +12,15 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC76Eykcgw9hmJu2WEewm8pXJoqFq8ADF21LPXmSQ11T2SwN1SZJBxjbNbvfAG8eq4d2Oo5ht4rDXT5h9jHT7ddmoe/BymyxdfnS4wLGei1oG1IXi4DWtWDYTwNVi2EQRUzjr4iJb1OAHukV2Zi62qvjUyWrpMIaaH+gbcQUWPFQBbM7MO9ou0WzbwZoT/qg2mh1OoAXg90fYWsdQQqSlwygLrehJNwzwq7vDhODxjcatGA+9WwXxUIshC9jmHDyk9nrOET0Q3k7PLIHrJ+sybI1onqQxL9bB9kJ+JO8JA+wk4suyYje8K8Tv0OJzZOzybEzYEspKORdpyV63nxIdCW2/U+TxYXbWrP4V6PAZ6qGeiTQF66BJY9mw3ywPIw1XXGq6Id3nRKoWpvKMNWhHSiKAUosad92vk+zroviBQV3mV9KblapzNUTiBueGiRcX5jyxmhMPc5Zwm4TNtBDsRZan6zAcJDTfK7S6Me91EkS5Fd0hAqNPtbrcmek2WMLkS3rZ51/hEslGAU8nsCRyocAWm7Iov1Tfi+ZX+E1ul81VREL0NOoO7+fScgnxcQZPgzQYzewFmzbrqvCXbJM9b48YpM6Jo1lpK/6ScHGJgzeNhK2xjkaF/JIwt1lKjM7SmsIO0C82v/Hb8zSVvL1PS0ZVYVUZxCEiSDTSYtdxFybQ== pi@raspberrypi"
     ];
   };
+
+  users.extraUsers.joona = {
+    isNormalUser = true;
+    uid = 1001;
+  };
+
+  users.extraUsers.juuso = {
+    isNormalUser = true;
+    uid = 1002;
+  };
+
 }
