@@ -102,6 +102,14 @@
     postRun = "systemctl restart nginx.service";
   };
 
+  security.acme.certs."rafiikka.lahteenmaki.net" = {
+    webroot = "/var/www";
+    email = "jyri-matti@lahteenmaki.net";
+    user = "nginx";
+    group = "nginx";
+    postRun = "systemctl restart nginx.service";
+  };
+
   users.mutableUsers = false;
   users.extraUsers.root.passwordFile = "/root/pwd";
 

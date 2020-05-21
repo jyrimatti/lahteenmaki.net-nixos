@@ -246,6 +246,34 @@
         }
       }
 
+      server {
+        server_name rafiikka.lahteenmaki.net;
+        
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        ssl_certificate /var/lib/acme/rafiikka.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/rafiikka.lahteenmaki.net/key.pem;
+
+        location / {
+          root /var/rafiikka;
+        }
+      }
+
+      server {
+        server_name rafiikka.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+	location / {
+          return 301 https://$host$request_uri;
+        }
+      }
+
 
       server {
         server_name lahteenmaki.net www.lahteenmaki.net;
@@ -286,6 +314,10 @@
 
         location /alava {
           rewrite ^/$ https://alava.lahteenmaki.net redirect;
+        }
+
+        location /rafiikka {
+          rewrite ^/$ https://rafiikka.lahteenmaki.net redirect;
         }
 
         location /uitesteri/ {
