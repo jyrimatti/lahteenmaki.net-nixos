@@ -16,9 +16,9 @@
             Arttuzz888 = "1b724b51-b21d-47dd-b777-4989d4630f81";
           };
     package = let 
-      version = "1.14.4";
-      url = "https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar";
-      sha256 = "0aapiwgx9bmnwgmrra9459qfl9bw8q50sja4lhhr64kf7amyvkay";
+      version = "1.15.2";
+      url = "https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar";
+      sha256 = "12kynrpxgcdg8x12wcvwkxka0fxgm5siqg8qq0nnmv0443f8dkw0";
     in (pkgs.minecraft-server.overrideAttrs (old: rec {
       name = "minecraft-server-${version}";
       inherit version;
