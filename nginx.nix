@@ -29,11 +29,14 @@
       fastcgi_param SERVER_NAME             $server_name;
       fastcgi_param HTTPS                   $https;
 
+      gzip            on;
+      gzip_types application/xhtml+xml text/plain application/xml text/xml application/json application/javascript text/javascript text/css application/vnd.geo+json application/x-java-serialized-object application/pdf application/x-ndjson text/csv;
+
       server {
         server_name blog.lahteenmaki.net;
         
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/blog.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/blog.lahteenmaki.net/key.pem;
@@ -66,8 +69,8 @@
       server {
         server_name hs.lahteenmaki.net;
 
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/hs.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/hs.lahteenmaki.net/key.pem;
@@ -96,8 +99,8 @@
       server {
         server_name joona.lahteenmaki.net;
 
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/joona.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/joona.lahteenmaki.net/key.pem;
@@ -127,8 +130,8 @@
       server {
         server_name juuso.lahteenmaki.net;
 
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/juuso.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/juuso.lahteenmaki.net/key.pem;
@@ -159,8 +162,8 @@
       server {
         server_name tkd.lahteenmaki.net;
          
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/tkd.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/tkd.lahteenmaki.net/key.pem;
@@ -189,8 +192,8 @@
       server {
         server_name alava.lahteenmaki.net;
         
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/alava.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/alava.lahteenmaki.net/key.pem;
@@ -218,8 +221,8 @@
       server {
         server_name binarycache.lahteenmaki.net;
         
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/binarycache.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/binarycache.lahteenmaki.net/key.pem;
@@ -249,8 +252,8 @@
       server {
         server_name rafiikka.lahteenmaki.net;
         
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/rafiikka.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/rafiikka.lahteenmaki.net/key.pem;
@@ -278,8 +281,8 @@
       server {
         server_name lahteenmaki.net www.lahteenmaki.net;
 
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
 
         ssl_certificate /var/lib/acme/lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/lahteenmaki.net/key.pem;
