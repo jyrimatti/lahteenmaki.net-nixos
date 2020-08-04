@@ -3,7 +3,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./nixos-in-place.nix
     ./services.nix
     ./users.nix
   ];
@@ -11,6 +10,8 @@
   environment.systemPackages = [
     pkgs.nox
     pkgs.ncdu
+    pkgs.git
+    pkgs.mkpasswd
   ];
 
   boot.loader.grub.enable = true;
@@ -19,8 +20,8 @@
   swapDevices = [ { device = "/swap"; } ];
 
   networking.enableIPv6 = false;
-  networking.interfaces.ens3.ipv4.addresses = [ { address = "146.185.139.29"; prefixLength = 24; } ];
-  networking.defaultGateway = "146.185.139.1";
+  networking.interfaces.ens3.ipv4.addresses = [ { address = "164.90.230.168"; prefixLength = 20; } ];
+  networking.defaultGateway = "164.90.224.1";
 
   networking.hostName = "lahteenmaki.net";
   networking.firewall.allowedTCPPorts = [ 80 443 6667 ];
@@ -36,6 +37,11 @@
   time.timeZone = "Europe/Helsinki";
 
   virtualisation.docker.enable = true;
+
+  security.sudo.enable =  true;
+  security.sudo.configFile = ''
+    %wheel ALL=(ALL) ALL
+  '';
 
   security.acme.certs."lahteenmaki.net" = {
     webroot = "/var/www";
