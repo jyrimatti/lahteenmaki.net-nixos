@@ -32,6 +32,14 @@
       gzip            on;
       gzip_types application/xhtml+xml text/plain application/xml text/xml application/json application/javascript text/javascript text/css application/vnd.geo+json application/x-java-serialized-object application/pdf application/x-ndjson text/csv;
 
+      proxy_cache_path /var/cache/nginx/dtinfra keys_zone=dtinfra:10m max_size=400m;
+      proxy_cache_path /var/cache/nginx/dtjeti keys_zone=dtjeti:10m max_size=100m;
+
+      map $http_Digitraffic_User $dtuser {
+        default "lahteenmaki.net/proxied";
+        ~. $http_Digitraffic_User;
+      }
+
       server {
         server_name blog.lahteenmaki.net;
         
@@ -261,6 +269,21 @@
         location / {
           root /var/rafiikka;
         }
+
+	location /infra-api/ {
+    		proxy_pass https://rata.digitraffic.fi/infra-api/;
+		proxy_cache dtinfra;
+		add_header X-Cache-status $upstream_cache_status;
+		proxy_set_header Digitraffic-User $dtuser;
+	}
+
+	location /jeti-api/ {
+    		proxy_pass https://rata.digitraffic.fi/jeti-api/;
+		proxy_cache dtjeti;
+		add_header X-Cache-status $upstream_cache_status;
+		proxy_set_header Digitraffic-User $dtuser;
+	}
+
       }
 
       server {
