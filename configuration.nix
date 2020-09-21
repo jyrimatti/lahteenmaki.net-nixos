@@ -43,6 +43,8 @@
     %wheel ALL=(ALL) ALL
   '';
 
+  security.acme.acceptTerms = true;
+
   security.acme.certs."lahteenmaki.net" = {
     webroot = "/var/www";
     email = "jyri-matti@lahteenmaki.net";
