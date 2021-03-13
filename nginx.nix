@@ -257,6 +257,12 @@
         }
       }
 
+# force cache rafiikka api call redirecets because otherwise safari doesn't cache redirect targets
+map $upstream_http_cache_control $cachecontrol {
+    "~."    $upstream_http_cache_control;
+    default "public, max-age=3600";
+}
+
       server {
         server_name rafiikka.lahteenmaki.net;
         
@@ -275,6 +281,8 @@
 		proxy_cache dtinfra;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
+		proxy_hide_header Cache-Control;
+		add_header Cache-Control $cachecontrol;
 	}
 
 	location /jeti-api/ {
@@ -282,6 +290,8 @@
 		proxy_cache dtjeti;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
+		proxy_hide_header Cache-Control;
+		add_header Cache-Control $cachecontrol;
 	}
 
       }
