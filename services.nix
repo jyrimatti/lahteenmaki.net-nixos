@@ -16,7 +16,7 @@
     enable = true;
     mailto = "jyri-matti@localhost";
     systemCronJobs = [
-      "0 3 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 nix-shell -I channel:nixos-20.03 -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 'https://rafiikka.lahteenmaki.net/#seed'\" "
+      "0/10 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 nix-shell -I channel:nixos-20.03 -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 'https://rafiikka.lahteenmaki.net/#seed'\" "
     ];
   };
 
