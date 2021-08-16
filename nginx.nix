@@ -274,6 +274,8 @@ map $upstream_http_cache_control $cachecontrol {
 
         location / {
           root /var/rafiikka;
+          add_header Cache-Control "public, must-revalidate";
+          add_header Last-Modified "";
         }
 
 	location /infra-api/ {
@@ -319,6 +321,12 @@ map $upstream_http_cache_control $cachecontrol {
 
         ssl_certificate /var/lib/acme/lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/lahteenmaki.net/key.pem;
+
+        location /stiebel {
+          root /var/www;
+          gzip off;
+          #add_header Accept-Ranges bytes;
+        }
 
         location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
           root /var/www;
