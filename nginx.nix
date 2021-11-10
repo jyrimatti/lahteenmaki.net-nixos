@@ -283,6 +283,7 @@ map $upstream_http_cache_control $cachecontrol {
 		proxy_cache dtinfra;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $host;
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control $cachecontrol;
 	}
@@ -292,6 +293,7 @@ map $upstream_http_cache_control $cachecontrol {
 		proxy_cache dtjeti;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $host;
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control $cachecontrol;
 	}
