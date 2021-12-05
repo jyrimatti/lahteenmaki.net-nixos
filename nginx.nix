@@ -32,8 +32,8 @@
       gzip            on;
       gzip_types application/xhtml+xml text/plain application/xml text/xml application/json application/javascript text/javascript text/css application/vnd.geo+json application/x-java-serialized-object application/pdf application/x-ndjson text/csv;
 
-      proxy_cache_path /var/cache/nginx/dtinfra keys_zone=dtinfra:10m max_size=400m;
-      proxy_cache_path /var/cache/nginx/dtjeti keys_zone=dtjeti:10m max_size=100m;
+      proxy_cache_path /var/cache/nginx/dtinfra keys_zone=dtinfra:10m max_size=400m inactive=30d;
+      proxy_cache_path /var/cache/nginx/dtjeti keys_zone=dtjeti:10m max_size=100m inactive=30d;
 
       map $http_Digitraffic_User $dtuser {
         default "lahteenmaki.net/proxied";
