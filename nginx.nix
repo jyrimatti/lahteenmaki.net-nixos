@@ -7,6 +7,8 @@
       index index.html index.txt index.json index.geojson index.xml index.gml index.sh;
       include ${pkgs.nginx}/conf/mime.types;
 
+      dav_ext_lock_zone zone=davlock:10m; 
+
       fastcgi_index index.sh;
       fastcgi_param QUERY_STRING            $query_string;
       fastcgi_param REQUEST_METHOD          $request_method;
@@ -50,6 +52,13 @@
         ssl_certificate_key /var/lib/acme/blog.lahteenmaki.net/key.pem;
 
         location / {
+          add_header Access-Control-Allow-Origin *;
+          if ($request_method = OPTIONS ) {
+            add_header Access-Control-Allow-Origin *;
+            add_header Access-Control-Allow-Headers 'origin, x-requested-with, content-type, accept, hx-current-url, hx-request';
+            add_header Access-Control-Allow-Methods 'GET';
+            return 200;
+          }
           root /var/blog;
         }
 
@@ -327,7 +336,8 @@ map $upstream_http_cache_control $cachecontrol {
         location /stiebel {
           root /var/www;
           gzip off;
-          #add_header Accept-Ranges bytes;
+          auth_basic "Restricted Content";
+          auth_basic_user_file /etc/nixos/.htpasswd;
         }
 
         location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
@@ -369,6 +379,16 @@ map $upstream_http_cache_control $cachecontrol {
         location /uitesteri/ {
           root /var/www/;
           add_header Access-Control-Allow-Origin *;
+        }
+
+        location /davtest/ {
+          root                  /var/www/;
+          dav_methods           PUT DELETE MKCOL COPY MOVE;
+          dav_ext_methods       PROPFIND OPTIONS;
+          dav_ext_lock          zone=davlock;
+          autoindex             on;
+
+          dav_access            all:r;
         }
 
 #        location ~ "^/http(s?)/(rata\.digitraffic\.fi|www\.lupapiste\.fi)(/)(.*)" {

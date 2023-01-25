@@ -25,7 +25,7 @@
   networking.defaultGateway = "164.90.224.1";
 
   networking.hostName = "lahteenmaki";
-  networking.firewall.allowedTCPPorts = [ 80 443 6667 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 6667 10012 ];
   networking.extraHosts = "176.93.30.166 aurinkofarmi";
   networking.nameservers = ["8.8.8.8" "8.8.4.4"];
 
@@ -115,10 +115,7 @@
     automatic = true;
     dates = "0 03 * * *";
   };
-
-  nix.extraOptions = ''
-    auto-optimise-store = true
-  '';
+  nix.autoOptimiseStore = true;
 
   nix.trustedUsers = ["jyri-matti"];
 
