@@ -381,6 +381,11 @@ map $upstream_http_cache_control $cachecontrol {
           add_header Access-Control-Allow-Origin *;
         }
 
+        location /.well-known/webfinger {
+          root /var/www/;
+          types { } default_type "application/jrd+json;charset=utf-8";
+        }
+
         location /davtest/ {
           root                  /var/www/;
           dav_methods           PUT DELETE MKCOL COPY MOVE;
