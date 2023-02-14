@@ -440,6 +440,10 @@ map $upstream_http_cache_control $cachecontrol {
         location /bus-json {
           proxy_pass http://data.itsfactory.fi/siriaccess/vm/json;
         }
+        location /goodreads/ {
+          proxy_pass https://www.goodreads.com/review/list_rss/;
+        }
+
       }
 
       server {
