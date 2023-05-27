@@ -37,6 +37,8 @@
       proxy_cache_path /var/cache/nginx/dtinfra keys_zone=dtinfra:10m max_size=400m inactive=30d;
       proxy_cache_path /var/cache/nginx/dtjeti keys_zone=dtjeti:10m max_size=100m inactive=30d;
 
+      proxy_read_timeout 300s;
+
       map $http_Digitraffic_User $dtuser {
         default "lahteenmaki.net/proxied";
         ~. $http_Digitraffic_User;
@@ -340,6 +342,11 @@ map $upstream_http_cache_control $cachecontrol {
           auth_basic_user_file /etc/nixos/.htpasswd;
         }
 
+        location /spot {
+          root /var/www;
+          gzip off;
+        }
+
         location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
           root /var/www;
           if (-f $request_filename) {
@@ -443,6 +450,31 @@ map $upstream_http_cache_control $cachecontrol {
         location /goodreads/ {
           proxy_pass https://www.goodreads.com/review/list_rss/;
         }
+
+        location /tyorako/ {
+          root /var/www/;
+          add_header Cache-Control "public, no-cache";
+        }
+
+	location /infra-api/ {
+    		proxy_pass https://rata.digitraffic.fi/infra-api/;
+		proxy_cache dtinfra;
+		add_header X-Cache-status $upstream_cache_status;
+		proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $host;
+		proxy_hide_header Cache-Control;
+		add_header Cache-Control "public, max-age=3600, immutable";
+	}
+
+	location /jeti-api/ {
+    		proxy_pass https://rata.digitraffic.fi/jeti-api/;
+		proxy_cache dtjeti;
+		add_header X-Cache-status $upstream_cache_status;
+		proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $host;
+		proxy_hide_header Cache-Control;
+		add_header Cache-Control "public, max-age=3600, immutable";
+	}
 
       }
 
