@@ -177,6 +177,47 @@
 
       }
 
+      server {
+        server_name spot.lahteenmaki.net;
+         
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+
+        ssl_certificate /var/lib/acme/spot.lahteenmaki.net/fullchain.pem;
+        ssl_certificate_key /var/lib/acme/spot.lahteenmaki.net/key.pem;
+
+        location ~ ^/.*[.]action$ {
+          root /var/spot;
+          if (-f $request_filename) {
+            fastcgi_pass unix:/run/fcgiwrap.sock;
+          }
+        }
+
+        location /spot.db {
+          root /var/spot;
+          gzip off;
+        }
+
+        location / {
+          root /var/spot;
+        }
+      }
+
+      server {
+        server_name spot.lahteenmaki.net;
+
+        listen *:80;
+
+        location /.well-known/acme-challenge/ {
+          root /var/www;
+        }
+
+        location / {
+          root /var/spot;
+          return 301 https://$host$request_uri;
+        }
+
+      }
 
       server {
         server_name tkd.lahteenmaki.net;
@@ -342,16 +383,9 @@ map $upstream_http_cache_control $cachecontrol {
           auth_basic_user_file /etc/nixos/.htpasswd;
         }
 
-        location ~ ^/spot/.*[.]action$ {
-          root /var/www;
-          if (-f $request_filename) {
-            fastcgi_pass unix:/run/fcgiwrap.sock;
-          }
-        }
-
         location /spot {
           root /var/www;
-          gzip off;
+          rewrite ^/$ http://spot.lahteenmaki.net redirect;
         }
 
         location / {

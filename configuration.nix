@@ -77,8 +77,13 @@
     postRun = "systemctl restart nginx.service";
   };
 
-
   security.acme.certs."tkd.lahteenmaki.net" = {
+    webroot = "/var/www";
+    email = "jyri-matti@lahteenmaki.net";
+    postRun = "systemctl restart nginx.service";
+  };
+
+  security.acme.certs."spot.lahteenmaki.net" = {
     webroot = "/var/www";
     email = "jyri-matti@lahteenmaki.net";
     postRun = "systemctl restart nginx.service";

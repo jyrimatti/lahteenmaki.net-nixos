@@ -20,7 +20,7 @@
       "*/12 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-21.11-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date 'yesterday')T00:00:00Z&seed'\" "
       "*/14 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-21.11-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date 'tomorrow')T00:00:00Z&seed'\" "
       "*/16 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-21.11-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date '+2 days')T00:00:00Z&seed'\" "
-      "0   18 * * *    jyri-matti cd /var/www/spot && ./load.sh | ./parse.sh | ./insert.sh"
+      "0   18 * * *    jyri-matti cd /var/spot && ./load.sh | ./parse.sh | ./insert.sh"
     ];
   };
 
