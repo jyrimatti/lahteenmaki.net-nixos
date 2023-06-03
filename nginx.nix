@@ -342,21 +342,16 @@ map $upstream_http_cache_control $cachecontrol {
           auth_basic_user_file /etc/nixos/.htpasswd;
         }
 
-        location /spot {
-          root /var/www;
-          gzip off;
-        }
-
-        location ~ "^([^?]*)?/index\.sh([?;].*)?$" {
+        location ~ ^/spot/.*[.]action$ {
           root /var/www;
           if (-f $request_filename) {
             fastcgi_pass unix:/run/fcgiwrap.sock;
           }
         }
 
-        location ~ "^[^?]+\.sh([?#].*)?" {
+        location /spot {
           root /var/www;
-          fastcgi_pass unix:/run/fcgiwrap.sock;
+          gzip off;
         }
 
         location / {

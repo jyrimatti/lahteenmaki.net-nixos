@@ -13,6 +13,7 @@
     pkgs.git
     pkgs.mkpasswd
     pkgs.killall
+    pkgs.sqlite
   ];
 
   boot.loader.grub.enable = true;
