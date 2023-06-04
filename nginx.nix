@@ -186,7 +186,7 @@
         ssl_certificate /var/lib/acme/spot.lahteenmaki.net/fullchain.pem;
         ssl_certificate_key /var/lib/acme/spot.lahteenmaki.net/key.pem;
 
-        location ~ ^/.*[.]action$ {
+        location ~ ^/.*[.]csv$ {
           root /var/spot;
           if (-f $request_filename) {
             fastcgi_pass unix:/run/fcgiwrap.sock;
