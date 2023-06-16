@@ -14,6 +14,8 @@
     pkgs.mkpasswd
     pkgs.killall
     pkgs.sqlite
+    pkgs.jq
+    pkgs.yq
   ];
 
   boot.loader.grub.enable = true;
