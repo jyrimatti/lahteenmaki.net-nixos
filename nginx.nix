@@ -31,8 +31,16 @@
       fastcgi_param SERVER_NAME             $server_name;
       fastcgi_param HTTPS                   $https;
 
+      fastcgi_param PATH                    /home/jyri-matti/.local/nix-override:/run/current-system/sw/bin/;
+
+      resolver 8.8.8.8;
+
       gzip            on;
       gzip_types application/xhtml+xml text/plain application/xml text/xml application/json application/javascript text/javascript text/css application/vnd.geo+json application/x-java-serialized-object application/pdf application/x-ndjson text/csv;
+
+      fastcgi_cache_path /var/cache/nginx/fastcgi1 keys_zone=fastcgi1:50m max_size=400m inactive=7d;
+      fastcgi_cache_path /var/cache/nginx/fastcgi2 keys_zone=fastcgi2:50m max_size=400m inactive=7d;
+      fastcgi_cache_key "$scheme$request_method$host$request_uri";
 
       proxy_cache_path /var/cache/nginx/dtinfra keys_zone=dtinfra:10m max_size=400m inactive=30d;
       proxy_cache_path /var/cache/nginx/dtjeti keys_zone=dtjeti:10m max_size=100m inactive=30d;
@@ -188,12 +196,16 @@
 
         location ~ ^/[^/]*[.]csv$ {
           root /var/spot;
+          fastcgi_cache fastcgi1;
+          add_header X-Cache-status $upstream_cache_status;
           if (-f $request_filename) {
             fastcgi_pass unix:/run/fcgiwrap.sock;
           }
         }
         location ~ ^/[^/]*[.]json$ {
           root /var/spot;
+          fastcgi_cache fastcgi2;
+          add_header X-Cache-status $upstream_cache_status;
           if (-f $request_filename) {
             fastcgi_pass unix:/run/fcgiwrap.sock;
           }
@@ -337,7 +349,8 @@ map $upstream_http_cache_control $cachecontrol {
         }
 
 	location /infra-api/ {
-    		proxy_pass https://rata.digitraffic.fi/infra-api/;
+                set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
+    		proxy_pass https://$upstream$request_uri;
 		proxy_cache dtinfra;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
@@ -347,7 +360,8 @@ map $upstream_http_cache_control $cachecontrol {
 	}
 
 	location /jeti-api/ {
-    		proxy_pass https://rata.digitraffic.fi/jeti-api/;
+                set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
+    		proxy_pass https://$upstream$request_uri;
 		proxy_cache dtjeti;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
@@ -471,19 +485,39 @@ map $upstream_http_cache_control $cachecontrol {
         }
 
         location /bus-tre {
-          proxy_pass http://api.publictransport.tampere.fi/1_0_2/;
+          set $upstream api.publictransport.tampere.fi; # using variable, to make Nginx start even if host not found
+          if ($request_uri ~* "/bus-tre(.*$)") {
+              set $path_remainder $1;
+          }
+          proxy_pass http://$upstream/1_0_2$path_remainder;
         }
         location /bus-hsl {
-          proxy_pass http://api.reittiopas.fi/hsl/prod/;
+          set $upstream api.reittiopas.fi; # using variable, to make Nginx start even if host not found
+          if ($request_uri ~* "/bus-hsl(.*$)") {
+              set $path_remainder $1;
+          }
+          proxy_pass http://$upstream/hsl/prod$path_remainder;
         }
         location /bus-siri {
-          proxy_pass https://siri.ij2010.tampere.fi/ws;
+          set $upstream siri.ij2010.tampere.fi; # using variable, to make Nginx start even if host not found
+          if ($request_uri ~* "/bus-siri(.*$)") {
+              set $path_remainder $1;
+          }
+          proxy_pass https://$upstream/ws$path_remainder;
         }
         location /bus-json {
-          proxy_pass http://data.itsfactory.fi/siriaccess/vm/json;
+          set $upstream data.itsfactory.fi; # using variable, to make Nginx start even if host not found
+          if ($request_uri ~* "/bus-json(.*$)") {
+              set $path_remainder $1;
+          }
+          proxy_pass http://$upstream/siriaccess/vm/json$path_remainder;
         }
         location /goodreads/ {
-          proxy_pass https://www.goodreads.com/review/list_rss/;
+          set $upstream www.goodreads.com; # using variable, to make Nginx start even if host not found
+          if ($request_uri ~* "/goodreads(/.*$)") {
+              set $path_remainder $1;
+          }
+          proxy_pass https://$upstream/review/list_rss$path_remainder;
         }
 
         location /tyorako/ {
@@ -492,7 +526,8 @@ map $upstream_http_cache_control $cachecontrol {
         }
 
 	location /infra-api/ {
-    		proxy_pass https://rata.digitraffic.fi/infra-api/;
+                set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
+    		proxy_pass https://$upstream$request_uri;
 		proxy_cache dtinfra;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
@@ -502,7 +537,8 @@ map $upstream_http_cache_control $cachecontrol {
 	}
 
 	location /jeti-api/ {
-    		proxy_pass https://rata.digitraffic.fi/jeti-api/;
+                set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
+    		proxy_pass https://$upstream$request_uri;
 		proxy_cache dtjeti;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
