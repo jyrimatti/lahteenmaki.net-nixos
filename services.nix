@@ -16,17 +16,17 @@
     enable = true;
     mailto = "jyri-matti@localhost";
     systemCronJobs = [
-      "*/10 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-21.11-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#seed'\" "
-      "*/12 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-21.11-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date 'yesterday')T00:00:00Z&seed'\" "
-      "*/14 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-21.11-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date 'tomorrow')T00:00:00Z&seed'\" "
-      "*/16 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-21.11-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date '+2 days')T00:00:00Z&seed'\" "
-      "0    * * * *    jyri-matti cd /var/spot && SECURITY_TOKEN=$(cat /home/jyri-matti/.entsoe_token.txt) ./e_load.sh | ./e_parse.sh | ./e_insert.sh"
+      "*/10 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-23.05-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#seed'\" "
+      "*/12 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-23.05-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date 'yesterday')T00:00:00Z&seed'\" "
+      "*/14 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-23.05-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date 'tomorrow')T00:00:00Z&seed'\" "
+      "*/16 5 * * *    jyri-matti NIXPKGS_ALLOW_UNFREE=1 timeout 10m nix-shell -I channel:nixos-23.05-small -p google-chrome --run \"google-chrome-stable --headless --enable-logging --disable-gpu --v=1 --remote-debugging-pipe 'https://rafiikka.lahteenmaki.net/#$(date -I --date '+2 days')T00:00:00Z&seed'\" "
+      "0    * * * *    jyri-matti export PATH=~/.local/nix-override:$PATH; cd /var/spot; ./spot_collect2db.sh"
     ];
   };
 
   services.openssh = {
     enable = true;
-    permitRootLogin = "no";
+    settings.PermitRootLogin = "no";
   };
 
   services.nginx.enable = true;

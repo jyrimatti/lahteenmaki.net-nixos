@@ -14,12 +14,13 @@
     pkgs.mkpasswd
     pkgs.killall
     pkgs.sqlite
+    pkgs.curl
     pkgs.jq
     pkgs.yq
+    pkgs.getoptions
   ];
 
   boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
 
   swapDevices = [ { device = "/swap"; } ];
 
@@ -123,9 +124,9 @@
     automatic = true;
     dates = "0 03 * * *";
   };
-  nix.autoOptimiseStore = true;
 
-  nix.trustedUsers = ["jyri-matti"];
+  nix.settings.auto-optimise-store = true;
+  nix.settings.trusted-users = ["jyri-matti"];
 
   nixpkgs.config.allowUnfree = true;
 }
