@@ -40,6 +40,7 @@
 
       fastcgi_cache_path /var/cache/nginx/fastcgi1 keys_zone=fastcgi1:50m max_size=400m inactive=7d;
       fastcgi_cache_path /var/cache/nginx/fastcgi2 keys_zone=fastcgi2:50m max_size=400m inactive=7d;
+      fastcgi_cache_path /var/cache/nginx/fastcgi3 keys_zone=fastcgi3:50m max_size=400m inactive=7d;
       fastcgi_cache_key "$scheme$request_method$host$request_uri";
 
       proxy_cache_path /var/cache/nginx/dtinfra keys_zone=dtinfra:10m max_size=400m inactive=30d;
@@ -210,6 +211,30 @@
             fastcgi_pass unix:/run/fcgiwrap.sock;
           }
         }
+        location /current.html {
+          root /var/spot;
+          fastcgi_cache fastcgi3;
+          add_header X-Cache-status $upstream_cache_status;
+          if (-f $request_filename) {
+            fastcgi_pass unix:/run/fcgiwrap.sock;
+          }
+        }
+        location /day.html {
+          root /var/spot;
+          fastcgi_cache fastcgi3;
+          add_header X-Cache-status $upstream_cache_status;
+          if (-f $request_filename) {
+            fastcgi_pass unix:/run/fcgiwrap.sock;
+          }
+        }
+        location /window.html {
+          root /var/spot;
+          fastcgi_cache fastcgi3;
+          add_header X-Cache-status $upstream_cache_status;
+          if (-f $request_filename) {
+            fastcgi_pass unix:/run/fcgiwrap.sock;
+          }
+        }
 
         location /spot.db {
           root /var/spot;
@@ -218,6 +243,9 @@
 
         location / {
           root /var/spot;
+          expires 0;
+          add_header Cross-Origin-Embedder-Policy "require-corp";
+          add_header Cross-Origin-Opener-Policy "same-origin";         
         }
       }
 
@@ -358,6 +386,13 @@ map $upstream_http_cache_control $cachecontrol {
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control $cachecontrol;
 	}
+
+        location @check_header {
+          if ($upstream_http_content_type = "text/css;charset=UTF-8") {
+            return 400 "Only text/event-stream allowed.";
+          }
+          return 200;
+        }
 
 	location /jeti-api/ {
                 set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
@@ -536,6 +571,21 @@ map $upstream_http_cache_control $cachecontrol {
 		add_header Cache-Control "public, max-age=3600, immutable";
 	}
 
+	location /beta-infra-api/ {
+                set $upstream rata-beta.digitraffic.fi; # using variable, to make Nginx start even if host not found
+    		if ($request_uri ~* "/beta-infra-api(/.*$)") {
+              	  set $path_remainder $1;
+          	}
+		proxy_pass https://$upstream/infra-api$path_remainder;
+		proxy_cache dtinfra;
+		add_header X-Cache-status $upstream_cache_status;
+		proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Prefix "/beta-infra-api";
+		proxy_hide_header Cache-Control;
+		add_header Cache-Control "public, max-age=3600, immutable";
+	}
+
 	location /jeti-api/ {
                 set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
     		proxy_pass https://$upstream$request_uri;
@@ -543,6 +593,21 @@ map $upstream_http_cache_control $cachecontrol {
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
                 proxy_set_header Host $host;
+		proxy_hide_header Cache-Control;
+		add_header Cache-Control "public, max-age=3600, immutable";
+	}
+
+	location /beta-jeti-api/ {
+                set $upstream rata-beta.digitraffic.fi; # using variable, to make Nginx start even if host not found
+    		if ($request_uri ~* "/beta-jeti-api(/.*$)") {
+                  set $path_remainder $1;
+                }
+                proxy_pass https://$upstream/jeti-api$path_remainder; 
+		proxy_cache dtjeti;
+		add_header X-Cache-status $upstream_cache_status;
+		proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-Prefix "/beta-jeti-api";
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control "public, max-age=3600, immutable";
 	}
