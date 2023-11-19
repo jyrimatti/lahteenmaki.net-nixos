@@ -18,6 +18,8 @@
     pkgs.jq
     pkgs.yq
     pkgs.getoptions
+    pkgs.bc
+    pkgs.dash
   ];
 
   boot.loader.grub.enable = true;
@@ -123,6 +125,7 @@
   nix.gc = {
     automatic = true;
     dates = "0 03 * * *";
+    options = "-d";
   };
 
   nix.settings.auto-optimise-store = true;
