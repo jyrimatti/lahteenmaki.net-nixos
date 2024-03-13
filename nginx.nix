@@ -558,6 +558,10 @@ map $upstream_http_cache_control $cachecontrol {
         location /tyorako/ {
           root /var/www/;
           add_header Cache-Control "public, no-cache";
+
+          location /tyorako/seed.txt {
+            fastcgi_pass unix:/run/fcgiwrap.sock;
+          }
         }
 
 	location /infra-api/ {
