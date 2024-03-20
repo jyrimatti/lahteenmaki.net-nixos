@@ -570,7 +570,9 @@ map $upstream_http_cache_control $cachecontrol {
 		proxy_cache dtinfra;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
-                proxy_set_header Host $host;
+                proxy_set_header Host $upstream;
+                proxy_ssl_server_name on;
+                proxy_http_version 1.1;
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control "public, max-age=3600, immutable";
 	}
@@ -584,7 +586,9 @@ map $upstream_http_cache_control $cachecontrol {
 		proxy_cache dtinfra;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
-                proxy_set_header Host $host;
+                proxy_set_header Host $upstream;
+                proxy_ssl_server_name on;
+                proxy_http_version 1.1;
                 proxy_set_header X-Forwarded-Prefix "/beta-infra-api";
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control "public, max-age=3600, immutable";
@@ -596,7 +600,9 @@ map $upstream_http_cache_control $cachecontrol {
 		proxy_cache dtjeti;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
-                proxy_set_header Host $host;
+                proxy_set_header Host $upstream;
+                proxy_ssl_server_name on;
+                proxy_http_version 1.1;
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control "public, max-age=3600, immutable";
 	}
@@ -610,7 +616,9 @@ map $upstream_http_cache_control $cachecontrol {
 		proxy_cache dtjeti;
 		add_header X-Cache-status $upstream_cache_status;
 		proxy_set_header Digitraffic-User $dtuser;
-                proxy_set_header Host $host;
+                proxy_set_header Host $upstream;
+                proxy_ssl_server_name on;
+                proxy_http_version 1.1;
                 proxy_set_header X-Forwarded-Prefix "/beta-jeti-api";
 		proxy_hide_header Cache-Control;
 		add_header Cache-Control "public, max-age=3600, immutable";
