@@ -124,8 +124,8 @@
 
   nix.gc = {
     automatic = true;
-    dates = "0 03 * * *";
-    options = "-d";
+    dates = "daily";
+    options = "--delete-older-than 30d";
   };
 
   nix.settings.auto-optimise-store = true;
