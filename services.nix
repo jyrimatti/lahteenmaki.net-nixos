@@ -35,6 +35,8 @@
 
   services.znc.enable = true;
 
+  services.fail2ban.enable = true;
+
   #services.nix-serve = {
   #  enable = true;
   #  secretKeyFile = "/var/cache-priv-key.pem";
