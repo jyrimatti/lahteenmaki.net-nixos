@@ -20,6 +20,9 @@
     pkgs.getoptions
     pkgs.bc
     pkgs.dash
+    pkgs.goaccess
+    pkgs.miller
+    pkgs.tarsnap
   ];
 
   boot.loader.grub.enable = true;
