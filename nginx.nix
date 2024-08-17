@@ -239,6 +239,7 @@
         location /spot.db {
           root /var/spot;
           gzip off;
+          add_header Access-Control-Allow-Origin *;
         }
 
         location / {
@@ -376,16 +377,18 @@ map $upstream_http_cache_control $cachecontrol {
           add_header Last-Modified "";
         }
 
-	location /infra-api/ {
+ 	location /infra-api/ {
                 set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
-    		proxy_pass https://$upstream$request_uri;
-		proxy_cache dtinfra;
-		add_header X-Cache-status $upstream_cache_status;
-		proxy_set_header Digitraffic-User $dtuser;
-                proxy_set_header Host $host;
-		proxy_hide_header Cache-Control;
-		add_header Cache-Control $cachecontrol;
-	}
+                proxy_pass https://$upstream$request_uri;
+                proxy_cache dtinfra;
+                add_header X-Cache-status $upstream_cache_status;
+                proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $upstream;
+                proxy_ssl_server_name on;
+                proxy_http_version 1.1;
+                proxy_hide_header Cache-Control;
+                add_header Cache-Control "public, max-age=3600, immutable";
+        }
 
         location @check_header {
           if ($upstream_http_content_type = "text/css;charset=UTF-8") {
@@ -396,15 +399,16 @@ map $upstream_http_cache_control $cachecontrol {
 
 	location /jeti-api/ {
                 set $upstream rata.digitraffic.fi; # using variable, to make Nginx start even if host not found
-    		proxy_pass https://$upstream$request_uri;
-		proxy_cache dtjeti;
-		add_header X-Cache-status $upstream_cache_status;
-		proxy_set_header Digitraffic-User $dtuser;
-                proxy_set_header Host $host;
-		proxy_hide_header Cache-Control;
-		add_header Cache-Control $cachecontrol;
-	}
-
+                proxy_pass https://$upstream$request_uri;
+                proxy_cache dtjeti;
+                add_header X-Cache-status $upstream_cache_status;
+                proxy_set_header Digitraffic-User $dtuser;
+                proxy_set_header Host $upstream;
+                proxy_ssl_server_name on;
+                proxy_http_version 1.1;
+                proxy_hide_header Cache-Control;
+                add_header Cache-Control "public, max-age=3600, immutable";
+        }
       }
 
       server {
@@ -434,6 +438,12 @@ map $upstream_http_cache_control $cachecontrol {
         location /stiebel {
           root /var/www;
           gzip off;
+          #auth_basic "Restricted Content";
+          #auth_basic_user_file /etc/nixos/.htpasswd;
+        }
+
+        location /report {
+          root /var/www;
           auth_basic "Restricted Content";
           auth_basic_user_file /etc/nixos/.htpasswd;
         }
