@@ -114,7 +114,7 @@
 
   users.mutableUsers = false;
   users.users.nginx.extraGroups = [ "acme" ];
-  users.extraUsers.root.passwordFile = "/root/pwd";
+  users.extraUsers.root.hashedPasswordFile = "/root/pwd";
 
   users.defaultUserShell = "/run/current-system/sw/bin/zsh";
   programs.zsh.enable = true;
