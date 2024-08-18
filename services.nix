@@ -5,6 +5,7 @@
     ./nginx.nix
     ./znc.nix
     ./minecraft.nix
+    ./monitoring.nix
   ];
 
   services.postfix = {
@@ -45,4 +46,5 @@
   #  enable = true;
   #  secretKeyFile = "/var/cache-priv-key.pem";
   #};
+
 }

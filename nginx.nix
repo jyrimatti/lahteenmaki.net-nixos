@@ -53,6 +53,11 @@
         ~. $http_Digitraffic_User;
       }
 
+      map $http_upgrade $connection_upgrade {
+        default upgrade;
+        "" close;
+      }
+
       server {
         server_name blog.lahteenmaki.net;
         
@@ -446,6 +451,45 @@ map $upstream_http_cache_control $cachecontrol {
           root /var/www;
           auth_basic "Restricted Content";
           auth_basic_user_file /etc/nixos/.htpasswd;
+        }
+
+        location ~ /netdata/(?<ndpath>.*) {
+          auth_basic "Restricted Content";
+          auth_basic_user_file /etc/nixos/.htpasswd;
+
+          proxy_redirect off;
+          proxy_set_header Host $host;
+
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-Server $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_http_version 1.1;
+          proxy_pass_request_headers on;
+          proxy_set_header Connection "keep-alive";
+          proxy_store off;
+          proxy_pass http://127.0.0.1:19999/$ndpath$is_args$args;
+
+          gzip on;
+          gzip_proxied any;
+          gzip_types *;
+        }
+        location /grafana/ {
+          proxy_pass http://127.0.0.1:2342;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection $connection_upgrade;
+          proxy_set_header Host "lahteenmaki.net";
+          auth_basic "Restricted Content";
+          auth_basic_user_file /etc/nixos/.htpasswd;
+          rewrite  ^/grafana/(.*)  /$1 break;
+        }
+        location /grafana/api/live/ {
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection $connection_upgrade;
+          proxy_set_header Host "lahteenmaki.net";
+          proxy_pass http://127.0.0.1:2342;
+          rewrite  ^/grafana/(.*)  /$1 break;
         }
 
         location /spot {
