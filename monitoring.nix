@@ -10,6 +10,9 @@
       ml = {
         "enabled" = "yes";
       };
+      db = {
+        "mode" = "dbengine"; 
+      };
     };
   };
 
