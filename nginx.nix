@@ -193,7 +193,7 @@
 
       server {
         server_name spot.lahteenmaki.net;
-         
+
         listen 443 ssl http2;
         listen [::]:443 ssl http2;
 
@@ -216,23 +216,7 @@
             fastcgi_pass unix:/run/fcgiwrap.sock;
           }
         }
-        location /current.html {
-          root /var/spot;
-          fastcgi_cache fastcgi3;
-          add_header X-Cache-status $upstream_cache_status;
-          if (-f $request_filename) {
-            fastcgi_pass unix:/run/fcgiwrap.sock;
-          }
-        }
-        location /day.html {
-          root /var/spot;
-          fastcgi_cache fastcgi3;
-          add_header X-Cache-status $upstream_cache_status;
-          if (-f $request_filename) {
-            fastcgi_pass unix:/run/fcgiwrap.sock;
-          }
-        }
-        location /window.html {
+        location ~ ^/[^/]*[.]html$ {
           root /var/spot;
           fastcgi_cache fastcgi3;
           add_header X-Cache-status $upstream_cache_status;
@@ -241,18 +225,41 @@
           }
         }
 
-        location /spot.db {
+        location = /spot.db {
           root /var/spot;
           gzip off;
           add_header Access-Control-Allow-Origin *;
+          add_header Cache-Control "max-age=3600, must-revalidate";
         }
 
-        location / {
+        location /lib {
+          root /var/spot;
+          add_header Cache-Control "max-age=31536000, immutable";
+          add_header Cross-Origin-Embedder-Policy "require-corp";
+          add_header Cross-Origin-Opener-Policy "same-origin";
+        }
+
+        location /res {
+          root /var/spot;
+          add_header Cache-Control "max-age=31536000, immutable";
+        }
+
+        location = / {
           root /var/spot;
           expires 0;
           add_header Cross-Origin-Embedder-Policy "require-corp";
-          add_header Cross-Origin-Opener-Policy "same-origin";         
+          add_header Cross-Origin-Opener-Policy "same-origin";
         }
+        location = /index.html {
+          root /var/spot;
+          expires 0;
+          add_header Cross-Origin-Embedder-Policy "require-corp";
+          add_header Cross-Origin-Opener-Policy "same-origin";
+        }
+        location = /test.html {
+          root /var/spot;
+        }
+
       }
 
       server {
@@ -681,7 +688,7 @@ map $upstream_http_cache_control $cachecontrol {
       }
 
       server {
-        server_name lahteenmaki.net www.lahteenmaki.net;
+        server_name lahteenmaki.net www.lahteenmaki.net 127.0.0.1;
 
         listen *:80;
 
@@ -694,7 +701,14 @@ map $upstream_http_cache_control $cachecontrol {
           return 301 https://$host$request_uri;
         }
 
+        location /stub_status {
+          stub_status;
+          allow 127.0.0.1;
+          deny all;
+        }
+
       }
+
     }
     events {
     }
