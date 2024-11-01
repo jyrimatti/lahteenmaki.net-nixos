@@ -244,7 +244,7 @@
           add_header Cache-Control "max-age=31536000, immutable";
         }
 
-        location = / {
+        location / {
           root /var/spot;
           expires 0;
           add_header Cross-Origin-Embedder-Policy "require-corp";
@@ -613,6 +613,7 @@ map $upstream_http_cache_control $cachecontrol {
           if ($request_uri ~* "/goodreads(/.*$)") {
               set $path_remainder $1;
           }
+          proxy_ssl_server_name on;
           proxy_pass https://$upstream/review/list_rss$path_remainder;
         }
 
