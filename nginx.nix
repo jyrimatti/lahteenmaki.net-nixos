@@ -580,34 +580,6 @@ map $upstream_http_cache_control $cachecontrol {
           autoindex on;
         }
 
-        location /bus-tre {
-          set $upstream api.publictransport.tampere.fi; # using variable, to make Nginx start even if host not found
-          if ($request_uri ~* "/bus-tre(.*$)") {
-              set $path_remainder $1;
-          }
-          proxy_pass http://$upstream/1_0_2$path_remainder;
-        }
-        location /bus-hsl {
-          set $upstream api.reittiopas.fi; # using variable, to make Nginx start even if host not found
-          if ($request_uri ~* "/bus-hsl(.*$)") {
-              set $path_remainder $1;
-          }
-          proxy_pass http://$upstream/hsl/prod$path_remainder;
-        }
-        location /bus-siri {
-          set $upstream siri.ij2010.tampere.fi; # using variable, to make Nginx start even if host not found
-          if ($request_uri ~* "/bus-siri(.*$)") {
-              set $path_remainder $1;
-          }
-          proxy_pass https://$upstream/ws$path_remainder;
-        }
-        location /bus-json {
-          set $upstream data.itsfactory.fi; # using variable, to make Nginx start even if host not found
-          if ($request_uri ~* "/bus-json(.*$)") {
-              set $path_remainder $1;
-          }
-          proxy_pass http://$upstream/siriaccess/vm/json$path_remainder;
-        }
         location /goodreads/ {
           set $upstream www.goodreads.com; # using variable, to make Nginx start even if host not found
           if ($request_uri ~* "/goodreads(/.*$)") {
