@@ -205,7 +205,7 @@
           fastcgi_cache fastcgi1;
           add_header X-Cache-status $upstream_cache_status;
           if (-f $request_filename) {
-            fastcgi_pass unix:/run/fcgiwrap.sock;
+            fastcgi_pass unix:/run/fcgiwrap-spot.sock;
           }
         }
         location ~ ^/[^/]*[.]json$ {
@@ -213,7 +213,7 @@
           fastcgi_cache fastcgi2;
           add_header X-Cache-status $upstream_cache_status;
           if (-f $request_filename) {
-            fastcgi_pass unix:/run/fcgiwrap.sock;
+            fastcgi_pass unix:/run/fcgiwrap-spot.sock;
           }
         }
         location ~ ^/[^/]*[.]html$ {
@@ -221,7 +221,7 @@
           fastcgi_cache fastcgi3;
           add_header X-Cache-status $upstream_cache_status;
           if (-f $request_filename) {
-            fastcgi_pass unix:/run/fcgiwrap.sock;
+            fastcgi_pass unix:/run/fcgiwrap-spot.sock;
           }
         }
 
@@ -622,7 +622,7 @@ map $upstream_http_cache_control $cachecontrol {
           add_header Cache-Control "public, no-cache";
 
           location /tyorako/seed.txt {
-            fastcgi_pass unix:/run/fcgiwrap.sock;
+            fastcgi_pass unix:/run/fcgiwrap-tyorako.sock;
           }
         }
 

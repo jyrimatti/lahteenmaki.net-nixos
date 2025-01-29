@@ -34,7 +34,19 @@
 
   services.nginx.enable = true;
   services.nginx.additionalModules = [ pkgs.nginxModules.dav pkgs.nginxModules.moreheaders ];
-  services.fcgiwrap.enable = true;
+
+  services.fcgiwrap.instances.spot = {
+    process.user = "jyri-matti";
+    process.group = "users";
+    socket.user = "nginx";
+    socket.group = "users";
+  };
+  services.fcgiwrap.instances.tyorako = {
+    process.user = "jyri-matti";
+    process.group = "users";
+    socket.user = "nginx";
+    socket.group = "users";
+  };
 
   services.znc.enable = true;
 
