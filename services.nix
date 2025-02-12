@@ -34,6 +34,7 @@
 
   services.nginx.enable = true;
   services.nginx.additionalModules = [ pkgs.nginxModules.dav pkgs.nginxModules.moreheaders ];
+  systemd.services.nginx.unitConfig.StartLimitInterval = 0;
 
   services.fcgiwrap.instances.spot = {
     process.user = "jyri-matti";
