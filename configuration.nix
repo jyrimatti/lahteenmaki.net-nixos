@@ -26,17 +26,19 @@
   ];
 
   boot.loader.grub.enable = true;
+  boot.tmp.cleanOnBoot = true;
+  zramSwap.enable = true;
 
-  swapDevices = [ { device = "/swap"; } ];
+  swapDevices = [ { device = "/swap"; size = 4*1024; } ];
 
   networking.enableIPv6 = false;
-  networking.interfaces.ens3.ipv4.addresses = [ { address = "164.90.230.168"; prefixLength = 20; } ];
-  networking.defaultGateway = "164.90.224.1";
+  networking.interfaces.ens3.ipv4.addresses = [ { address = "85.9.221.51"; prefixLength = 22; } ];
+  networking.defaultGateway = "85.9.220.1";
 
   networking.hostName = "lahteenmaki";
   networking.firewall.allowedTCPPorts = [ 80 443 6667 10012 19999 ];
   networking.extraHosts = "176.93.30.166 aurinkofarmi";
-  networking.nameservers = ["8.8.8.8" "8.8.4.4"];
+  networking.nameservers = ["94.237.127.9" "94.237.40.9"];
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -70,7 +72,7 @@
   security.acme.certs."hs.lahteenmaki.net" = {
     webroot = "/var/www";
     email = "jyri-matti@lahteenmaki.net";
-    postRun = "systemctl restart nginx.service";
+   postRun = "systemctl restart nginx.service";
   };
 
   security.acme.certs."joona.lahteenmaki.net" = {
@@ -103,12 +105,6 @@
     postRun = "systemctl restart nginx.service";
   };
 
-  security.acme.certs."binarycache.lahteenmaki.net" = {
-    webroot = "/var/www";
-    email = "jyri-matti@lahteenmaki.net";
-    postRun = "systemctl restart nginx.service";
-  };
-
   security.acme.certs."rafiikka.lahteenmaki.net" = {
     webroot = "/var/www";
     email = "jyri-matti@lahteenmaki.net";
@@ -117,7 +113,6 @@
 
   users.mutableUsers = false;
   users.users.nginx.extraGroups = [ "acme" ];
-  users.extraUsers.root.hashedPasswordFile = "/root/pwd";
 
   users.defaultUserShell = "/run/current-system/sw/bin/zsh";
   programs.zsh.enable = true;

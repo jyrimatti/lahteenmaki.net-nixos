@@ -337,37 +337,6 @@
         }
       }
 
-      server {
-        server_name binarycache.lahteenmaki.net;
-        
-        listen 443 ssl http2;
-        listen [::]:443 ssl http2;
-
-        ssl_certificate /var/lib/acme/binarycache.lahteenmaki.net/fullchain.pem;
-        ssl_certificate_key /var/lib/acme/binarycache.lahteenmaki.net/key.pem;
-
-        location / {
-          proxy_pass http://localhost:${toString config.services.nix-serve.port};
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
-        }
-      }
-
-      server {
-        server_name binarycache.lahteenmaki.net;
-
-        listen *:80;
-
-        location /.well-known/acme-challenge/ {
-          root /var/www;
-        }
-
-	location / {
-          return 301 https://$host$request_uri;
-        }
-      }
-
 # force cache rafiikka api call redirecets because otherwise safari doesn't cache redirect targets
 map $upstream_http_cache_control $cachecontrol {
     "~."    $upstream_http_cache_control;
